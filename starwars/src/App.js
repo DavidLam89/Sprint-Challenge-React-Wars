@@ -23,6 +23,7 @@ class App extends Component {
         return res.json();
       })
       .then(data => {
+        console.log(data);
         this.setState({ starwarsChars: data.results });
       })
       .catch(err => {
@@ -30,10 +31,29 @@ class App extends Component {
       });
   };
 
+  setCurrentPage(num) {
+      this.getCharacters(`https://swapi.co/api/people/?page=${num}`);
+  }
+
+  createControls() {
+    let controls = [];
+    for (let i = 1; i <= 5; i++) {
+      controls.push(
+        <div className='button' onClick={() => this.setCurrentPage(i)}>
+          {i}
+        </div>
+      );
+    }
+    return controls;
+  }
+
   render() {
     return (
       <div className="App">
         <h1 className="Header">React Wars</h1>
+        <div className='pagination-controls'>
+          {this.createControls()}
+        </div>
         <div className='list'>
           {this.state.starwarsChars.map((characterFromMap) => (
             <Character character={characterFromMap} />
